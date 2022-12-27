@@ -7,7 +7,7 @@ namespace RizBot.Data
     {
         public RizContext(DbContextOptions<RizContext> options) : base(options) { }
         
-        public DbSet<Channel> Servers { get; set; }
+        public DbSet<Channel> Channels { get; set; }
     }
 
     public class Channel

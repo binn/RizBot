@@ -56,10 +56,18 @@ namespace RizBot
             await Task.Delay(-1);
         }
 
-        private Task Ready()
+        private async Task Ready()
         {
-            _logger!.LogInformation("Bot ready!");
-            return Task.CompletedTask;
+            await _interactions!.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
+            _client!.InteractionCreated += async interaction =>
+            {
+                var scope = _services!.CreateScope();
+                var ctx = new SocketInteractionContext(_client, interaction);
+                await _interactions.ExecuteCommandAsync(ctx, scope.ServiceProvider);
+            };
+
+            foreach(var guild in _client.Guilds)
+                await _interactions.RegisterCommandsToGuildAsync(guild.Id, true);
         }
 
         private Task Log(LogMessage msg)
