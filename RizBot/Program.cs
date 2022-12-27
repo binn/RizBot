@@ -58,7 +58,7 @@ namespace RizBot
 
         private async Task Ready()
         {
-            await _interactions!.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
+            await _interactions!.AddModulesAsync(Assembly.GetExecutingAssembly(), _services);
             _client!.InteractionCreated += async interaction =>
             {
                 var scope = _services!.CreateScope();

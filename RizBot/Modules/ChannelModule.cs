@@ -25,7 +25,7 @@ namespace RizBot.Modules
             bool channelExists = await _ctx.Channels.AnyAsync(x => x.Id == channel.Id.ToString());
             if (channelExists)
             {
-                await FollowupAsync("This channel is already registered to receive new play announcements.");
+                await RespondAsync("This channel is already registered to receive new play announcements.");
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace RizBot.Modules
             await _ctx.SaveChangesAsync();
 
             _logger.LogInformation("Channel #{channel} was added by {user}", channel.Name, Context.User.ToString());
-            await FollowupAsync("Channel added.");
+            await RespondAsync("Channel added.");
         }
 
         [RequireUserPermission(GuildPermission.ManageChannels)]
@@ -48,7 +48,7 @@ namespace RizBot.Modules
             var channel = await _ctx.Channels.FirstOrDefaultAsync(x => x.Id == target.Id.ToString());
             if (channel == null)
             {
-                await FollowupAsync("This channel isn't registered to receive new play announcements.");
+                await RespondAsync("This channel isn't registered to receive new play announcements.");
                 return;
             }
 
@@ -56,13 +56,13 @@ namespace RizBot.Modules
             await _ctx.SaveChangesAsync();
 
             _logger.LogInformation("Channel #{channel} was removed by {user}", target.Name, Context.User.ToString());
-            await FollowupAsync("This channel has been removed from recieving new play announcements.");
+            await RespondAsync("This channel has been removed from recieving new play announcements.");
         }
 
         [SlashCommand("add", "Sends a link to add this bot to your server.")]
         public async Task GetBotLinkAsync()
         {
-            await FollowupAsync($"Add this bot to your server by clicking this link:\nhttps://discord.com/api/oauth2/authorize?client_id={Context.Client.CurrentUser.Id}&permissions=8&scope=bot%20applications.commands");
+            await RespondAsync($"Add this bot to your server by clicking this link:\nhttps://discord.com/api/oauth2/authorize?client_id={Context.Client.CurrentUser.Id}&permissions=8&scope=bot%20applications.commands");
         }
     }
 }
