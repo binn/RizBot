@@ -50,11 +50,15 @@ namespace RizBot
 
             _client.Log += Log;
             _client.Ready += Ready;
+            _client.JoinedGuild += JoinedGuild;
 
             await _client.LoginAsync(TokenType.Bot, _configuration["Token"]);
             await _client.StartAsync();
             await Task.Delay(-1);
         }
+
+        private async Task JoinedGuild(SocketGuild guild) =>
+            await _interactions!.RegisterCommandsToGuildAsync(guild.Id, true);
 
         private async Task Ready()
         {
