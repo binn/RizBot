@@ -11,7 +11,7 @@ namespace RizBot.Data
         {
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true)
-                .AddEnvironmentVariables("RIZ")
+                .AddEnvironmentVariables("RIZ_")
                 .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
                 .Build();
 
