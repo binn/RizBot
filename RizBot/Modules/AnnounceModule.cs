@@ -35,17 +35,17 @@ namespace RizBot.Modules
 
             var embed = new EmbedBuilder()
                 .WithTitle("New Trade")
-                .WithDescription($":moneybag: **Ticker**: {ticker}\n:notepad_spiral: **Contract**: {strike}\n:green_circle: **Entry**: {price}\n:stop_sign: **Stop Loss**: {stoploss}\n\n"
-                + "***This is not financial advice, trade at your own risk and make sure to do your own research.***"
-                + (string.IsNullOrWhiteSpace(comment) ? "" : ":speech_balloon: **Comments**: " + comment))
+                .WithDescription($":moneybag: **Ticker**: {ticker}\n:notepad_spiral: **Contract**: {strike}\n:green_circle: **Entry**: {price}\n:stop_sign: **Stop Loss**: {stoploss}"
+                + (string.IsNullOrWhiteSpace(comment) ? "" : "\n:speech_balloon: **Comments**: " + comment)
+                + "\n\n***This is not financial advice, trade at your own risk and make sure to do your own research.***")
                 .WithCurrentTimestamp()
                 .WithFooter("@RizVTrades", "https://bin.moe/s/9608b4d737859664b11c53ec0d95f9f2.jpg")
                 .WithColor(Color.Green)
                 .Build();
 
+            var channels = await _ctx.Channels.ToListAsync();
             _ = Task.Run(async () =>
             {
-                var channels = await _ctx.Channels.ToListAsync();
                 foreach (var channel in channels)
                 {
                     var guildChannel = (ITextChannel)await Context.Client.GetChannelAsync(ulong.Parse(channel.Id));
@@ -71,17 +71,17 @@ namespace RizBot.Modules
 
             var embed = new EmbedBuilder()
                 .WithTitle("Close Trade")
-                .WithDescription($":moneybag: **Ticker**: {ticker}\n:notepad_spiral: **Contract**: {strike}\n:red_circle: **Exit**: {price}\n\n"
-                + "***This is not financial advice, trade at your own risk and make sure to do your own research.***"
-                + (string.IsNullOrWhiteSpace(comment) ? "" : ":speech_balloon: **Comments**: " + comment))
+                .WithDescription($":moneybag: **Ticker**: {ticker}\n:notepad_spiral: **Contract**: {strike}\n:red_circle: **Exit**: {price}"
+                + (string.IsNullOrWhiteSpace(comment) ? "" : "\n:speech_balloon: **Comments**: " + comment)
+                + "\n\n***This is not financial advice, trade at your own risk and make sure to do your own research.***")
                 .WithCurrentTimestamp()
                 .WithFooter("@RizVTrades", "https://bin.moe/s/9608b4d737859664b11c53ec0d95f9f2.jpg")
                 .WithColor(Color.Red)
                 .Build();
 
+            var channels = await _ctx.Channels.ToListAsync();
             _ = Task.Run(async () =>
             {
-                var channels = await _ctx.Channels.ToListAsync();
                 foreach (var channel in channels)
                 {
                     var guildChannel = (ITextChannel)await Context.Client.GetChannelAsync(ulong.Parse(channel.Id));
