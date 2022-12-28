@@ -46,7 +46,7 @@ namespace RizBot.Modules
                             continue;
 
                         var textChannel = (ITextChannel)guildChannel;
-                        await textChannel.SendMessageAsync(":rocket: Honk honk!");
+                        _ = textChannel.SendMessageAsync(":rocket: Honk honk!").ConfigureAwait(false);
                     }
                     catch (Exception exception)
                     {
