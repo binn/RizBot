@@ -31,12 +31,12 @@ namespace RizBot.Modules
             }
 
             await RespondAsync("Honk!");
-            var scope = _services.CreateScope();
             _ = Task.Run(async () =>
             {
+                var scope = _services.CreateScope();
                 var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
                 using var ctx = scope.ServiceProvider.GetService<RizContext>();
-                var channels = await ctx.Channels.ToListAsync();
+                var channels = await ctx!.Channels.ToListAsync();
                 foreach (var channel in channels)
                 {
                     try
@@ -50,7 +50,7 @@ namespace RizBot.Modules
                     }
                     catch (Exception exception)
                     {
-                        logger.LogError(exception, "An error occured while trying to send a message to {channel}.", channel.Id);
+                        logger!.LogError(exception, "An error occured while trying to send a message to {channel}.", channel.Id);
                     }
                 }
             });

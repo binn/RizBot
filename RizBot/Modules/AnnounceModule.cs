@@ -47,9 +47,10 @@ namespace RizBot.Modules
                 .WithColor(Color.Green)
                 .Build();
 
-            var scope = _services.CreateScope();
+            await RespondAsync("Created entry play.");
             _ = Task.Run(async () =>
             {
+                var scope = _services.CreateScope();
                 var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
                 using var ctx = scope.ServiceProvider.GetService<RizContext>();
                 var channels = await ctx!.Channels.ToListAsync();
@@ -70,8 +71,6 @@ namespace RizBot.Modules
                     }
                 }
             });
-
-            await RespondAsync("Created entry play.");
         }
 
 
@@ -97,9 +96,10 @@ namespace RizBot.Modules
                 .WithColor(Color.Red)
                 .Build();
 
-            var scope = _services.CreateScope();
-            _ = Task.Run(async () =>
+            await RespondAsync("Created exit play.");
+            _ = Task.Factory.StartNew(async () =>
             {
+                var scope = _services.CreateScope();
                 var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
                 using var ctx = scope.ServiceProvider.GetService<RizContext>();
                 var channels = await ctx!.Channels.ToListAsync();
@@ -120,8 +120,6 @@ namespace RizBot.Modules
                     }
                 }
             });
-
-            await RespondAsync("Created exit play.");
         }
     }
 }
