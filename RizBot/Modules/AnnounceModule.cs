@@ -48,10 +48,10 @@ namespace RizBot.Modules
                 .Build();
 
             await RespondAsync("Created entry play.");
-            _ = Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 var scope = _services.CreateScope();
-                var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
+                var logger = scope.ServiceProvider.GetService<ILogger<AnnounceModule>>();
                 using var ctx = scope.ServiceProvider.GetService<RizContext>();
                 var channels = await ctx!.Channels.ToListAsync();
                 foreach (var channel in channels)
@@ -97,10 +97,10 @@ namespace RizBot.Modules
                 .Build();
 
             await RespondAsync("Created exit play.");
-            _ = Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 var scope = _services.CreateScope();
-                var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
+                var logger = scope.ServiceProvider.GetService<ILogger<AnnounceModule>>();
                 using var ctx = scope.ServiceProvider.GetService<RizContext>();
                 var channels = await ctx!.Channels.ToListAsync();
                 foreach (var channel in channels)
