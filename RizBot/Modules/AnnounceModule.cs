@@ -63,7 +63,7 @@ namespace RizBot.Modules
                             continue;
 
                         var textChannel = (ITextChannel)guildChannel;
-                        await textChannel.SendMessageAsync(embed: embed);
+                        _ = textChannel.SendMessageAsync(embed: embed).ConfigureAwait(false);
                     }
                     catch (Exception exception)
                     {
@@ -112,7 +112,7 @@ namespace RizBot.Modules
                             continue;
 
                         var textChannel = (ITextChannel)guildChannel;
-                        await textChannel.SendMessageAsync(embed: embed);
+                        _ = textChannel.SendMessageAsync(embed: embed).ConfigureAwait(false);
                     }
                     catch (Exception exception)
                     {

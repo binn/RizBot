@@ -31,7 +31,7 @@ namespace RizBot.Modules
             }
 
             await RespondAsync("Honk!");
-            _ = Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 var scope = _services.CreateScope();
                 var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
