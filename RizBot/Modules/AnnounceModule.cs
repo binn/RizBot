@@ -63,7 +63,7 @@ namespace RizBot.Modules
                             continue;
 
                         var textChannel = (ITextChannel)guildChannel;
-                        await textChannel.SendMessageAsync(":rocket: Honk honk!");
+                        await textChannel.SendMessageAsync(embed: embed);
                     }
                     catch (Exception exception)
                     {
@@ -97,7 +97,7 @@ namespace RizBot.Modules
                 .Build();
 
             await RespondAsync("Created exit play.");
-            _ = Task.Factory.StartNew(async () =>
+            _ = Task.Run(async () =>
             {
                 var scope = _services.CreateScope();
                 var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
@@ -112,7 +112,7 @@ namespace RizBot.Modules
                             continue;
 
                         var textChannel = (ITextChannel)guildChannel;
-                        await textChannel.SendMessageAsync(":rocket: Honk honk!");
+                        await textChannel.SendMessageAsync(embed: embed);
                     }
                     catch (Exception exception)
                     {
