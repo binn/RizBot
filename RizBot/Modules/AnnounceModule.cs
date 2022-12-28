@@ -2,8 +2,10 @@
 using Discord.Interactions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RizBot.Data;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace RizBot.Modules
 {
@@ -12,11 +14,13 @@ namespace RizBot.Modules
         private RizContext _ctx;
         private readonly string[]? _admins;
         private readonly ILogger<AnnounceModule> _logger;
+        private readonly IServiceProvider _services;
 
-        public AnnounceModule(IConfiguration configuration, ILogger<AnnounceModule> logger, RizContext ctx)
+        public AnnounceModule(IConfiguration configuration, ILogger<AnnounceModule> logger, RizContext ctx, IServiceProvider services)
         {
             _ctx = ctx;
             _logger = logger;
+            _services = services;
             _admins = configuration["Admins"]?.Split(',')?.Select(x => x.Trim())?.ToArray();
         }
 
@@ -43,13 +47,27 @@ namespace RizBot.Modules
                 .WithColor(Color.Green)
                 .Build();
 
-            var channels = await _ctx.Channels.ToListAsync();
+            var scope = _services.CreateScope();
             _ = Task.Run(async () =>
             {
+                var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
+                using var ctx = scope.ServiceProvider.GetService<RizContext>();
+                var channels = await ctx!.Channels.ToListAsync();
                 foreach (var channel in channels)
                 {
-                    var guildChannel = (ITextChannel)await Context.Client.GetChannelAsync(ulong.Parse(channel.Id));
-                    await guildChannel.SendMessageAsync(embed: embed);
+                    try
+                    {
+                        var guildChannel = await Context.Client.GetChannelAsync(ulong.Parse(channel.Id));
+                        if (guildChannel == null)
+                            continue;
+
+                        var textChannel = (ITextChannel)guildChannel;
+                        await textChannel.SendMessageAsync(":rocket: Honk honk!");
+                    }
+                    catch (Exception exception)
+                    {
+                        logger!.LogError(exception, "An error occured while trying to send a message to {channel}.", channel.Id);
+                    }
                 }
             });
 
@@ -79,13 +97,27 @@ namespace RizBot.Modules
                 .WithColor(Color.Red)
                 .Build();
 
-            var channels = await _ctx.Channels.ToListAsync();
+            var scope = _services.CreateScope();
             _ = Task.Run(async () =>
             {
+                var logger = scope.ServiceProvider.GetService<ILogger<SillyModule>>();
+                using var ctx = scope.ServiceProvider.GetService<RizContext>();
+                var channels = await ctx!.Channels.ToListAsync();
                 foreach (var channel in channels)
                 {
-                    var guildChannel = (ITextChannel)await Context.Client.GetChannelAsync(ulong.Parse(channel.Id));
-                    await guildChannel.SendMessageAsync(embed: embed);
+                    try
+                    {
+                        var guildChannel = await Context.Client.GetChannelAsync(ulong.Parse(channel.Id));
+                        if (guildChannel == null)
+                            continue;
+
+                        var textChannel = (ITextChannel)guildChannel;
+                        await textChannel.SendMessageAsync(":rocket: Honk honk!");
+                    }
+                    catch (Exception exception)
+                    {
+                        logger!.LogError(exception, "An error occured while trying to send a message to {channel}.", channel.Id);
+                    }
                 }
             });
 
